@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Button, Container, Row, Col, Table, Form, Modal } from 'react-bootstrap';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import './Mandal.css'
+import './Mandal.css';
+import API_BASE_URL from '../config';
 const Mandal = () => {
   const [acs, setAcs] = useState([]);
   const [selectedAc, setSelectedAc] = useState(null);
@@ -20,7 +21,7 @@ const Mandal = () => {
 
   // Fetch all ACs
   useEffect(() => {
-    axios.get('http://localhost:8000/ac/getAll-ac')
+    axios.get(`${API_BASE_URL}/ac/getAll-ac`)
       .then((response) => {
         setAcs(response.data.data);
       })
@@ -54,7 +55,7 @@ const Mandal = () => {
 
   // Add mandal
   const addMandal = () => {
-    axios.post(`http://localhost:8000/ac/add-mandal/${selectedAc._id}`, { name: newMandalName })
+    axios.post(`${API_BASE_URL}/ac/add-mandal/${selectedAc._id}`, { name: newMandalName })
       .then((response) => {
         setMandals([...mandals, response.data.data]);
         closeAddModal();
@@ -93,7 +94,7 @@ const Mandal = () => {
 
   // Update mandal
   const updateMandal = () => {
-    axios.put(`http://localhost:8000/ac/edit-mandal/${selectedAc._id}/${selectedMandal._id}`, { name: updateMandalName })
+    axios.put(`${API_BASE_URL}/ac/edit-mandal/${selectedAc._id}/${selectedMandal._id}`, { name: updateMandalName })
       .then(() => {
         const updatedMandals = mandals.map(m => m._id === selectedMandal._id ? { ...m, name: updateMandalName } : m);
         setMandals(updatedMandals);
@@ -141,7 +142,7 @@ const Mandal = () => {
         try {
           // Call the API to delete the Mandal
           const response = await axios.delete(
-            `http://localhost:8000/allotment/delete-mandal/${mandal._id}/${selectedAc._id}`,
+            `${API_BASE_URL}/allotment/delete-mandal/${mandal._id}/${selectedAc._id}`,
             {
               headers: {
                 "Content-Type": "application/json"
@@ -205,7 +206,7 @@ const Mandal = () => {
 
   // Add village
   const addVillage = () => {
-    axios.post(`http://localhost:8000/ac/add-village/${selectedAc._id}/${selectedMandal._id}`, { name: newVillageName })
+    axios.post(`${API_BASE_URL}/ac/add-village/${selectedAc._id}/${selectedMandal._id}`, { name: newVillageName })
       .then((response) => {
         setVillages([...villages, response.data.data]);
         setNewVillageName('');
@@ -251,7 +252,7 @@ const Mandal = () => {
         try {
           // Call the API to delete the Village
           const response = await fetch(
-            `http://localhost:8000/allotment/delete-village/${village._id}/${selectedMandal._id}/${selectedAc._id}`,
+            `${API_BASE_URL}/allotment/delete-village/${village._id}/${selectedMandal._id}/${selectedAc._id}`,
             {
               method: "DELETE",
               headers: {
@@ -314,7 +315,7 @@ const Mandal = () => {
 
   // Update village
   const updateVillage = () => {
-    axios.put(`http://localhost:8000/ac/edit-village/${selectedAc._id}/${selectedMandal._id}/${selectedVillage._id}`, { name: updateVillageName })
+    axios.put(`${API_BASE_URL}/ac/edit-village/${selectedAc._id}/${selectedMandal._id}/${selectedVillage._id}`, { name: updateVillageName })
       .then(() => {
         const updatedVillages = villages.map(v => v._id === selectedVillage._id ? { ...v, name: updateVillageName } : v);
         setVillages(updatedVillages);

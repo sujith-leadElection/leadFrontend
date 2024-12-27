@@ -5,6 +5,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import JsonToPdf from './PDFView';
 import { useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../config';
 
 const GrievanceTable = () => {
   const [grievanceCategories, setGrievanceCategories] = useState([]);
@@ -39,7 +40,7 @@ const GrievanceTable = () => {
           return;
         }
 
-        const tokenResponse = await axios.post('http://localhost:8000/auth/getTokeninfo', { token });
+        const tokenResponse = await axios.post(`${API_BASE_URL}/auth/getTokeninfo`, { token });
         const { userId, role } = tokenResponse.data;
 
         setUserInfo({ userId, role }); // Update user info
@@ -84,7 +85,7 @@ const GrievanceTable = () => {
   };
   const fetchEmployeeAcDetails = async (employeeId) => {
     try {
-      const { data } = await axios.get(`http://localhost:8000/allotment/employee-allotment/${employeeId}`);
+      const { data } = await axios.get(`${API_BASE_URL}/allotment/employee-allotment/${employeeId}`);
       const allotedACId = data.allotedACId;
 
       if (!allotedACId) {
@@ -92,7 +93,7 @@ const GrievanceTable = () => {
         return;
       }
 
-      const acDetails = await axios.get('http://localhost:8000/ac/getAll-ac');
+      const acDetails = await axios.get(`${API_BASE_URL}/ac/getAll-ac`);
       fetchAllACMandalVillageData(acDetails.data)
       createAcMap(acDetails.data, allotedACId);
     } catch (error) {
@@ -109,7 +110,7 @@ const GrievanceTable = () => {
 
   const fetchAllAcData = async (allotedACId = '', allocatedMandalId = '', allocatedVillageId = '') => {
     try {
-      const { data } = await axios.get('http://localhost:8000/ac/getAll-ac');
+      const { data } = await axios.get(`${API_BASE_URL}/ac/getAll-ac`);
       fetchAllACMandalVillageData(data);
       createAcMap(data, allotedACId, allocatedMandalId, allocatedVillageId);
     } catch (error) {
@@ -192,7 +193,7 @@ const GrievanceTable = () => {
 
   const fetchGrievances = async (userId, role) => {
     try {
-      const response = await fetch(`http://localhost:8000/grievances/getdocuments/${userId}/${role}`);
+      const response = await fetch(`${API_BASE_URL}/grievances/getdocuments/${userId}/${role}`);
       if (!response.ok) {
         throw new Error('Failed to fetch grievances');
       }
@@ -240,7 +241,7 @@ const GrievanceTable = () => {
   const deleteEdit = async (grievanceId, category) => {
     try {
       // Call the delete API
-      const response = await axios.get(`http://localhost:8000/grievances/delete-grievance/${grievanceId}`);
+      const response = await axios.get(`${API_BASE_URL}/grievances/delete-grievance/${grievanceId}`);
       if (response.status === 200) {
         // Update the grievances state by removing the deleted grievance from the specific category
         setGrievances((prevGrievances) => {

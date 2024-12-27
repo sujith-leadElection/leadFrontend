@@ -7,6 +7,7 @@ import { RiGovernmentLine } from "react-icons/ri";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { IoIosContact } from "react-icons/io";
 import { IoMdAdd } from "react-icons/io";
+import API_BASE_URL from '../config';
 
 function errorMessage(statusCode, error) {
   switch (statusCode) {
@@ -36,7 +37,7 @@ const AddAC = () => {
   const fetchACs = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:8000/ac/getAll-ac');
+      const response = await axios.get(`${API_BASE_URL}/ac/getAll-ac`);
       setAcs(response.data.data);
     } catch (error) {
       Swal.fire({
@@ -55,7 +56,7 @@ const AddAC = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:8000/ac/add-ac', newAC);
+      const response = await axios.post(`${API_BASE_URL}/ac/add-ac`, newAC);
       // Append the new AC data to the existing `acs` state
       setAcs((prevAcs) => [...prevAcs, response.data.data]);
 
@@ -103,7 +104,7 @@ const AddAC = () => {
       if (result.isConfirmed) { // Proceed only if the user confirms
         try {
           // Send a DELETE request to the server
-          const response = await axios.delete(`http://localhost:8000/allotment/delete-ac/${ac._id}`);
+          const response = await axios.delete(`${API_BASE_URL}/allotment/delete-ac/${ac._id}`);
 
           // If the deletion is successful
           if (response.status === 200) {
@@ -152,7 +153,7 @@ const AddAC = () => {
   const handleUpdateAC = async () => {
     setLoading(true);
     try {
-      const response = await axios.put(`http://localhost:8000/ac/edit-ac/${currentAC._id}`, {
+      const response = await axios.put(`${API_BASE_URL}/ac/edit-ac/${currentAC._id}`, {
         "name": currentAC.name,
         "parliamentaryConstituency": currentAC.parliamentaryConstituency,
         "PCId": currentAC.PCId,

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Container, Table, Button, Modal, Form, Row, Col } from 'react-bootstrap';
 import Swal from 'sweetalert2';
+import API_BASE_URL from '../config';
 const EmployeeDatabase = () => {
   const [employees, setEmployees] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
@@ -19,7 +20,7 @@ const EmployeeDatabase = () => {
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/allotment/getAll-employees');
+      const response = await axios.get(`${API_BASE_URL}/allotment/getAll-employees`);
       setEmployees(response.data.employees);
     } catch (error) {
       Swal.fire({
@@ -57,7 +58,7 @@ const EmployeeDatabase = () => {
   const handlePasswordChangeSubmit = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8000/employee/update-password/${selectedPasswordEmployee}`,
+        `${API_BASE_URL}/employee/update-password/${selectedPasswordEmployee}`,
         { password: newPassword }
       );
       if (response.status === 200) {
@@ -84,7 +85,7 @@ const EmployeeDatabase = () => {
 
   const deleteEmployee = async (employee) => {
     try {
-      const response = await axios.delete(`http://localhost:8000/employee/delete-employee/${employee._id}`);
+      const response = await axios.delete(`${API_BASE_URL}/employee/delete-employee/${employee._id}`);
       if (response.status === 200) {
         Swal.fire({
           position: "top-end",
@@ -127,7 +128,7 @@ const EmployeeDatabase = () => {
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(`http://localhost:8000/employee/edit-employee/${selectedEmployee._id}`, updateData);
+      const response = await axios.put(`${API_BASE_URL}/employee/edit-employee/${selectedEmployee._id}`, updateData);
       //alert(response.data.message);
       Swal.fire({
         position: "top-end",

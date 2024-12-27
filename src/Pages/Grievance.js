@@ -10,6 +10,7 @@ import Others from '../Components/Others';
 import { validateForm } from './GrievancesValidation';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import API_BASE_URL from '../config';
 
 const LetterRequestForm = () => {
   const [loading, setLoading] = useState(true); // Loading state
@@ -49,7 +50,7 @@ const LetterRequestForm = () => {
           navigate('/login');
           window.location.reload();
         } else {
-          const tokenResponse = await axios.post('http://localhost:8000/auth/getTokeninfo', { token });
+          const tokenResponse = await axios.post(`${API_BASE_URL}/auth/getTokeninfo`, { token });
           const { userId, role } = tokenResponse.data;
           setUserInfo({ userId, role });
 
@@ -76,7 +77,7 @@ const LetterRequestForm = () => {
 
   const fetchGrievanceData = async (grievanceId) => {
     try {
-      const response = await axios.get(`http://localhost:8000/grievances/getdocument/${grievanceId}`);
+      const response = await axios.get(`${API_BASE_URL}/grievances/getdocument/${grievanceId}`);
       const letterRequestData = response.data.letterRequest;
       setFormData(letterRequestData);
       if (letterRequestData.acId) {
@@ -100,7 +101,7 @@ const LetterRequestForm = () => {
 
   const fetchEmployeeAcDetails = async (employeeId) => {
     try {
-      const { data } = await axios.get(`http://localhost:8000/allotment/employee-allotment/${employeeId}`);
+      const { data } = await axios.get(`${API_BASE_URL}/allotment/employee-allotment/${employeeId}`);
       const allotedACId = data.allotedACId;
 
       if (!allotedACId) {
@@ -113,7 +114,7 @@ const LetterRequestForm = () => {
         acId: allotedACId,
       });
 
-      const acDetails = await axios.get('http://localhost:8000/ac/getAll-ac');
+      const acDetails = await axios.get(`${API_BASE_URL}/ac/getAll-ac`);
       createAcMap(acDetails.data, allotedACId);
     } catch (error) {
       setIsAcAllocated(false); // Handle the error as "AC not allocated"
@@ -129,7 +130,7 @@ const LetterRequestForm = () => {
 
   const fetchAllAcData = async (allotedACId = '', allocatedMandalId = '', allocatedVillageId = '') => {
     try {
-      const { data } = await axios.get('http://localhost:8000/ac/getAll-ac');
+      const { data } = await axios.get(`${API_BASE_URL}/ac/getAll-ac`);
       createAcMap(data, allotedACId, allocatedMandalId, allocatedVillageId);
     } catch (error) {
       Swal.fire({
@@ -248,8 +249,8 @@ const LetterRequestForm = () => {
     }
     // Determine whether to make a POST or PUT request
     const url = grievanceId
-      ? `http://localhost:8000/grievances/${grievanceId}`
-      : `http://localhost:8000/grievances/${tokenInfo.userId}/${selectedCategory}/${tokenInfo.role}`;
+      ? `${API_BASE_URL}/grievances/${grievanceId}`
+      : `${API_BASE_URL}/grievances/${tokenInfo.userId}/${selectedCategory}/${tokenInfo.role}`;
 
     const method = grievanceId ? "put" : "post"; // Use 'put' for updates, 'post' for creation
     axios({

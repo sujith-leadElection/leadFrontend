@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import './Login.css'; // Import CSS for styling
 import logo from '../Images/leadlogo.PNG';
-
+import API_BASE_URL from '../config';
 const Login = ({ setIsAuthenticated }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,7 +13,7 @@ const Login = ({ setIsAuthenticated }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/auth/signin', {
+      const response = await axios.post(`${API_BASE_URL}/auth/signin`, {
         credentials: {
           email,
           password,

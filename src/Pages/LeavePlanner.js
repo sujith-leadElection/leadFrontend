@@ -3,7 +3,7 @@ import axios from 'axios';
 import LeaveManagement from "../Components/EmployeeHRPlanner";
 import AdminLeaveApproval from "../Components/AdminHRPlanner";
 import { useNavigate } from 'react-router-dom';
-
+import API_BASE_URL from '../config';
 const AttendancePlanner = () => {
     const [userInfo, setUserInfo] = useState({});
     const [loading, setLoading] = useState(true);
@@ -19,7 +19,7 @@ const AttendancePlanner = () => {
                     window.location.reload();
                 } else {
                     const tokenResponse = await axios.post(
-                        'http://localhost:8000/auth/getTokeninfo',
+                        `${API_BASE_URL}/auth/getTokeninfo`,
                         { token }
                     );
                     const { userId, role } = tokenResponse.data;
@@ -27,7 +27,7 @@ const AttendancePlanner = () => {
 
                     // Fetch consolidated data based on user role
                     const response = await axios.get(
-                        `http://localhost:8000/grievances/consolidated-data/${userId}/${role}`
+                        `${API_BASE_URL}/grievances/consolidated-data/${userId}/${role}`
                     );
                     setData(response.data.data);
                 }

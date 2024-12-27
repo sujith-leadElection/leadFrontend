@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './AdminLeaveApproval.css';
 import Swal from 'sweetalert2';
+import API_BASE_URL from '../config';
 
 const AdminLeaveApproval = () => {
   const [notApprovedLeaves, setNotApprovedLeaves] = useState([]);
@@ -12,7 +13,7 @@ const AdminLeaveApproval = () => {
   useEffect(() => {
     const fetchLeaveHistory = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/employee/getAllHistoryOfAllEmployees');
+        const response = await axios.get(`${API_BASE_URL}/employee/getAllHistoryOfAllEmployees`);
         setNotApprovedLeaves(response.data.notApprovedLeaves);
         setApprovedLeaves(response.data.approvedLeaves);
         setRejectedLeaves(response.data.rejectedLeaves);
@@ -33,7 +34,7 @@ const AdminLeaveApproval = () => {
 
   const handleApprove = async (leaveId, employeeId) => {
     try {
-      await axios.put(`http://localhost:8000/employee/approve-leave/${leaveId}/${employeeId}`);
+      await axios.put(`${API_BASE_URL}/employee/approve-leave/${leaveId}/${employeeId}`);
       const approvedLeave = notApprovedLeaves.find(leave => leave._id === leaveId);
       setNotApprovedLeaves(notApprovedLeaves.filter(leave => leave._id !== leaveId));
       setApprovedLeaves([...approvedLeaves, { ...approvedLeave, approved: 'APPROVED' }]);
@@ -51,7 +52,7 @@ const AdminLeaveApproval = () => {
 
   const handleReject = async (leaveId, employeeId) => {
     try {
-      await axios.put(`http://localhost:8000/employee/reject-leave/${leaveId}/${employeeId}`);
+      await axios.put(`${API_BASE_URL}/employee/reject-leave/${leaveId}/${employeeId}`);
       const rejectedLeave = notApprovedLeaves.find(leave => leave._id === leaveId);
       setNotApprovedLeaves(notApprovedLeaves.filter(leave => leave._id !== leaveId));
       setRejectedLeaves([...rejectedLeaves, { ...rejectedLeave, approved: 'REJECTED',

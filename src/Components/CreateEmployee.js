@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import API_BASE_URL from '../config';
 const CreateEmployee = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -49,7 +50,7 @@ const CreateEmployee = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/auth/create-emp', {
+      const response = await axios.post(`${API_BASE_URL}/auth/create-emp`, {
         credentials: formData
       });
       Swal.fire({

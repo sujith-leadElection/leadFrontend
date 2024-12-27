@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap';
 import Swal from 'sweetalert2';
+import API_BASE_URL from '../config';
 
 const AllotmentComponent = () => {
   const [acs, setAcs] = useState([]);
@@ -14,7 +15,7 @@ const AllotmentComponent = () => {
 
   useEffect(() => {
     // Fetch AC details
-    axios.get('http://localhost:8000/ac/getAll-ac')
+    axios.get(`${API_BASE_URL}/ac/getAll-ac`)
       .then((response) => {
         const acData = response.data.data;
         setAcs(acData);
@@ -35,7 +36,7 @@ const AllotmentComponent = () => {
       });
 
     // Fetch employee details
-    axios.get('http://localhost:8000/allotment/getAll-employees')
+    axios.get(`${API_BASE_URL}/allotment/getAll-employees`)
       .then((response) => {
         const employeeData = response.data.employees;
         setEmployees(employeeData);
@@ -61,7 +62,7 @@ const AllotmentComponent = () => {
 
   // Function to fetch and set allotments
   const fetchAllotments = () => {
-    axios.get('http://localhost:8000/allotment/allotments')
+    axios.get(`${API_BASE_URL}/allotment/allotments`)
       .then((response) => {
         setAllotments(response.data.allotments);
       })
@@ -72,7 +73,7 @@ const AllotmentComponent = () => {
 
   // Handle allotment assignment
   const handleAssignAllotment = () => {
-    axios.post('http://localhost:8000/allotment/add-allotment', {
+    axios.post(`${API_BASE_URL}/allotment/add-allotment`, {
       employeeId: selectedEmployeeId,
       acId: selectedAcId,
     })
@@ -98,7 +99,7 @@ const AllotmentComponent = () => {
   };
 
   const handleDeleteAllotment = (employeeId) => {
-    axios.delete(`http://localhost:8000/allotment/delete-allotment/${employeeId}`)
+    axios.delete(`${API_BASE_URL}/allotment/delete-allotment/${employeeId}`)
       .then(() => {
         Swal.fire({
           title: "Allotment Deleted Successfully!",

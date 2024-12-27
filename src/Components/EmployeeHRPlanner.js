@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Container, Row, Col, Form, Button, Alert, ListGroup } from 'react-bootstrap';
 import './LeaveManagement.css';
 import Swal from 'sweetalert2';
+import API_BASE_URL from '../config';
 
 const LeaveManagement = ({ employeeId }) => {
     const [leaveData, setLeaveData] = useState([]);
@@ -17,7 +18,7 @@ const LeaveManagement = ({ employeeId }) => {
     useEffect(() => {
         const fetchLeaveData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/employee/leave-data/${employeeId}`);
+                const response = await axios.get(`${API_BASE_URL}/employee/leave-data/${employeeId}`);
                 setLeaveData(response.data.leaveData);
                 setExtraLeaves(response.data.extraLeaves);
             } catch (err) {
@@ -33,7 +34,7 @@ const LeaveManagement = ({ employeeId }) => {
 
         const fetchLeaveHistory = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/employee/leave-history/${employeeId}`);
+                const response = await axios.get(`${API_BASE_URL}/employee/leave-history/${employeeId}`);
                 setLeaveHistory(response.data);
             } catch (err) {
                 return
@@ -47,7 +48,7 @@ const LeaveManagement = ({ employeeId }) => {
     const handleApplyLeave = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8000/employee/apply-leave', {
+            const response = await axios.post(`${API_BASE_URL}/employee/apply-leave`, {
                 employeeId,
                 date: leaveDate,
                 type: leaveType,
@@ -58,10 +59,10 @@ const LeaveManagement = ({ employeeId }) => {
             setLeaveDate('');
             setPurpose('');
             // Refetch data after successful application
-            const resLeaveData = await axios.get(`http://localhost:8000/employee/leave-data/${employeeId}`);
+            const resLeaveData = await axios.get(`${API_BASE_URL}/employee/leave-data/${employeeId}`);
             setLeaveData(resLeaveData.data.leaveData);
             setExtraLeaves(resLeaveData.data.extraLeaves);
-            const resLeaveHistory = await axios.get(`http://localhost:8000/employee/leave-history/${employeeId}`);
+            const resLeaveHistory = await axios.get(`${API_BASE_URL}/employee/leave-history/${employeeId}`);
             setLeaveHistory(resLeaveHistory.data);
         } catch (err) {
             setError(err.response?.data?.message || 'Error applying for leave');
@@ -71,14 +72,14 @@ const LeaveManagement = ({ employeeId }) => {
 
     const handleCancelLeave = async (leaveId) => {
         try {
-            const response = await axios.put(`http://localhost:8000/employee/cancel-leave/${employeeId}/${leaveId}`);
+            const response = await axios.put(`${API_BASE_URL}/employee/cancel-leave/${employeeId}/${leaveId}`);
             setSuccess(response.data.message);
             setError('');
             // Refetch data after successful application
-            const resLeaveData = await axios.get(`http://localhost:8000/employee/leave-data/${employeeId}`);
+            const resLeaveData = await axios.get(`${API_BASE_URL}/employee/leave-data/${employeeId}`);
             setLeaveData(resLeaveData.data.leaveData);
             setExtraLeaves(resLeaveData.data.extraLeaves);
-            const resLeaveHistory = await axios.get(`http://localhost:8000/employee/leave-history/${employeeId}`);
+            const resLeaveHistory = await axios.get(`${API_BASE_URL}/employee/leave-history/${employeeId}`);
             setLeaveHistory(resLeaveHistory.data);
         } catch (err) {
             setError(err.response?.data?.message || 'Error canceling leave');

@@ -19,6 +19,7 @@ import logo from "./Images/leadlogo.PNG";
 import { MdArrowForwardIos } from "react-icons/md"; // Right-facing arrow
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import API_BASE_URL from './config';
 
 const Sidebar = ({ toggleSidebar, role }) => (
   <div className="sidebar-container d-flex flex-column p-3 CustomFont" style={{
@@ -92,7 +93,7 @@ const App = () => {
         } else {
           if (token) setIsAuthenticated(true);
           const tokenResponse = await axios.post(
-            'http://localhost:8000/auth/getTokeninfo',
+            `${API_BASE_URL}/auth/getTokeninfo`,
             { token }
           );
           const { userId, role } = tokenResponse.data;

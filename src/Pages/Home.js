@@ -5,6 +5,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { Pie, Bar } from 'react-chartjs-2'; // Import chart components from react-chartjs-2
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'; // Import necessary chart.js elements
 import 'bootstrap/dist/css/bootstrap.min.css';
+import API_BASE_URL from '../config';
 
 // Register the necessary chart.js elements
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
@@ -26,16 +27,16 @@ const Home = () => {
           window.location.reload();
         } else {
           const tokenResponse = await axios.post(
-            'http://localhost:8000/auth/getTokeninfo',
+            `${API_BASE_URL}/auth/getTokeninfo`,
             { token }
           );
           const { userId, role } = tokenResponse.data;
           setUserInfo({ userId, role });
-          const profileResponse = await axios.get(`http://localhost:8000/employee/profile/${userId}`);
+          const profileResponse = await axios.get(`${API_BASE_URL}/employee/profile/${userId}`);
           setProfile(profileResponse.data);
 
           const response = await axios.get(
-            `http://localhost:8000/grievances/consolidated-data/${userId}/${role}`
+            `${API_BASE_URL}/grievances/consolidated-data/${userId}/${role}`
           );
           setData(response.data.data);
           console.log(response.data.data);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-
+import API_BASE_URL from '../config';
 const VillagesModal = ({ acId, mandalId, closeModal }) => {
   const [villages, setVillages] = useState([]);
   const [newVillageName, setNewVillageName] = useState('');
@@ -11,7 +11,7 @@ const VillagesModal = ({ acId, mandalId, closeModal }) => {
   useEffect(() => {
     const fetchVillages = async () => {
       try {
-        const response = await axios.get(`/getAll-mandal/${acId}`);
+        const response = await axios.get(`${API_BASE_URL}/getAll-mandal/${acId}`);
         const mandal = response.data.mandal.find(m => m._id === mandalId);
         if (mandal) setVillages(mandal.villages);
       } catch (error) {
@@ -24,7 +24,7 @@ const VillagesModal = ({ acId, mandalId, closeModal }) => {
   // Handle adding a new village
   const addVillage = async () => {
     try {
-      const response = await axios.post(`http://localhost:8000/ac/add-village/${acId}/${mandalId}`, { name: newVillageName });
+      const response = await axios.post(`${API_BASE_URL}/ac/add-village/${acId}/${mandalId}`, { name: newVillageName });
       setVillages([...villages, response.data.data]);
       setNewVillageName('');
       Swal.fire({
@@ -49,7 +49,7 @@ const VillagesModal = ({ acId, mandalId, closeModal }) => {
   // Handle editing a village
   const updateVillage = async (villageId, updatedName) => {
     try {
-      const response = await axios.put(`http://localhost:8000/ac/edit-village/${acId}/${mandalId}/${villageId}`, { name: updatedName });
+      const response = await axios.put(`${API_BASE_URL}/ac/edit-village/${acId}/${mandalId}/${villageId}`, { name: updatedName });
       setVillages(villages.map(village => village._id === villageId ? { ...village, name: updatedName } : village));
       setEditingVillage(null); // Close the editing pop-up
       Swal.fire({
