@@ -1,0 +1,98 @@
+.leave-management-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.apply-leave,
+.leave-data {
+    flex: 1;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+textarea {
+    resize: none;
+    height: 100px;
+}
+
+.submit-button,
+.cancel-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.cancel-button {
+    background-color: #f44336;
+}
+
+.submit-button:hover,
+.cancel-button:hover {
+    opacity: 0.9;
+}
+
+.success-message {
+    color: green;
+    text-align: center;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+}
+
+.leave-table,
+.leave-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.leave-table th,
+.leave-history-table th,
+.leave-table td,
+.leave-history-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.leave-table th,
+.leave-history-table th {
+    background-color: #f4f4f4;
+}
+
+.empty-message {
+    text-align: center;
+    font-style: italic;
+    color: #666;
+}

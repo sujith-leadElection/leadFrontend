@@ -1,0 +1,58 @@
+* {
+  margin: 0;
+  padding: 0
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.container-fluid {
+  padding: 0; /* Remove padding from the container */
+}
+
+.row {
+  margin: 0; /* Remove margin from the row */
+}
+
+.sidebar {
+  background-color: white; /* Optional: Set sidebar background color */
+}
+.sidebar-container {
+  background-color: white;
+  color: black;
+  height: 100vh;
+}
+
+.sidebar-header {
+  color: black;
+  font-size: 1.25rem;
+}
+
+.menu-icon {
+  font-size: 1.5rem;
+  color: black;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  color: black;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.sidebar-link:hover {
+  color: orange; /* Darker orange on hover */
+}
+
+.sidebar-link img {
+  margin-right: 8px;
+}
+
+.sidebar-link:focus, .sidebar-link:active, .sidebar-link:hover {
+  text-decoration: none;
+}
+
