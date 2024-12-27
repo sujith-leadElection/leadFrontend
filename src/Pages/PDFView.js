@@ -13,7 +13,6 @@ const JsonToPdf = ({ jsonData, acName, mandalName, villageName }) => {
         const pageWidth = doc.internal.pageSize.getWidth();
         const pageHeight = doc.internal.pageSize.getHeight();
         const margin = 10;
-        const contentWidth = pageWidth - margin * 2;
         const contentHeight = pageHeight - margin * 2;
         const lineSpacing = 8;
 
@@ -177,9 +176,8 @@ const JsonToPdf = ({ jsonData, acName, mandalName, villageName }) => {
                 }
                 if (transferType==="new_post_recommendation") {
                     grievanceInfo.push(["Transfer Type","New Post Recommendation"])
-                    var recomLocation = jsonData.transfer.recommendationLocation
-                    var recomPosition = jsonData.transfer.recommendationPosition
-                    grievanceInfo.push(["Recommendation Location",recomLocation])
+                    var recomLocationS = jsonData.transfer.recommendationLocation
+                    grievanceInfo.push(["Recommendation Location",recomLocationS])
                     grievanceInfo.push(["Recommendation Position",recomPosition])
                 }
                 break

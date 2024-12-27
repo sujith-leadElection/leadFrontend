@@ -59,13 +59,4 @@ const AttendancePlanner = () => {
     );
 };
 
-const AdminComponent = ({ data }) => {
-    return (
-        <div>
-            <h1>Admin Dashboard</h1>
-            <p>Data: {JSON.stringify(data)}</p>
-        </div>
-    );
-};
-
 export default AttendancePlanner;

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import CreateEmployee from '../Components/CreateEmployee';
 import EmployeeDatabase from '../Components/EmployeeDatabase';
-import { Button, ButtonGroup } from 'react-bootstrap';
 
 const EmployeeManagement = () => {
   const [activeSection, setActiveSection] = useState('create');

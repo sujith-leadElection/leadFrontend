@@ -89,20 +89,20 @@ const AdminLeaveApproval = () => {
           <table className="leave-table">
             <thead>
               <tr>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Purpose</th>
-                <th>Employee Name</th>
-                <th>Actions</th>
+                <th>DATE</th>
+                <th>TYPE</th>
+                <th>PURPOSE</th>
+                <th>EMPLOYEE NAME</th>
+                <th>ACTIONS</th>
               </tr>
             </thead>
             <tbody>
               {notApprovedLeaves.map((leave) => (
                 <tr key={leave._id}>
                   <td>{new Date(leave.date).toLocaleDateString('en-GB')}</td>
-                  <td>{leave.type}</td>
-                  <td>{leave.purpose}</td>
-                  <td>{leave.employeeName}</td>
+                  <td>{leave.type.toUpperCase()}</td>
+                  <td>{leave.purpose.toUpperCase()}</td>
+                  <td>{leave.employeeName.toUpperCase()}</td>
                   <td>
                     <button className="approve-button" onClick={() => handleApprove(leave._id, leave.employeeId)}>Approve</button>
                     <button className="reject-button" onClick={() => handleReject(leave._id, leave.employeeId)}>Reject</button>
@@ -122,19 +122,19 @@ const AdminLeaveApproval = () => {
           <table className="leave-table">
             <thead>
               <tr>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Purpose</th>
-                <th>Employee Name</th>
+                <th>DATE</th>
+                <th>TYPE</th>
+                <th>PURPOSE</th>
+                <th>EMPLOYEE NAME</th>
               </tr>
             </thead>
             <tbody>
               {approvedLeaves.map((leave) => (
                 <tr key={leave._id}>
                   <td>{new Date(leave.date).toLocaleDateString('en-GB')}</td>
-                  <td>{leave.type}</td>
-                  <td>{leave.purpose}</td>
-                  <td>{leave.employeeName}</td>
+                  <td>{leave.type.toUpperCase()}</td>
+                  <td>{leave.purpose.toUpperCase()}</td>
+                  <td>{leave.employeeName.toUpperCase()}</td>
                 </tr>
               ))}
             </tbody>
@@ -150,19 +150,19 @@ const AdminLeaveApproval = () => {
           <table className="leave-table">
             <thead>
               <tr>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Purpose</th>
-                <th>Employee Name</th>
+                <th>DATE</th>
+                <th>TYPE</th>
+                <th>PURPOSE</th>
+                <th>EMPLOYEE NAME</th>
               </tr>
             </thead>
             <tbody>
               {rejectedLeaves.map((leave) => (
                 <tr key={leave._id}>
                   <td>{new Date(leave._doc.date).toLocaleDateString('en-GB')}</td>
-                  <td>{leave._doc.type}</td>
-                  <td>{leave._doc.purpose}</td>
-                  <td>{leave.employeeName}</td>
+                  <td>{leave._doc.type.toUpperCase()}</td>
+                  <td>{leave._doc.purpose.toUpperCase()}</td>
+                  <td>{leave.employeeName.toUpperCase()}</td>
                 </tr>
               ))}
             </tbody>

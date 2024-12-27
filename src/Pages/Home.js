@@ -69,8 +69,6 @@ const Home = () => {
   }));
 
   const transferTypes = ['transfer', 'retention', 'recommendation', 'new_post_recommended'];
-
-  const totalACs = data.allAC?.length || 0;
   const totalEmployees = data.employees?.length || 0;
   const totalRecords = grievanceCounts.reduce(
     (acc, { count }) => acc + (count || 0),
@@ -313,43 +311,47 @@ const Home = () => {
   };
   return (
     <Container>
-      <h1 className="text-center my-4">
+      <h1 className="text-center my-4" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 'bold', color: '#4A90E2' }}>
         Welcome, {userInfo.role ? profile.name : `${profile.firstname} ${profile.lastname}`}
       </h1>
-      <Row className="mb-4" style={{ marginBottom: "5rem"}}>
-        {/* Charts in one row */}
+      <Row className="mb-4" style={{ marginBottom: "5rem" }}>
         <Col xs={12} md={6} className="mb-4 shadow-lg card">
           <div className="chart-card" style={{ height: '400px' }}>
-            <h3 style={{ textAlign: 'center' }}>Grievance Distribution</h3>
-            {/* Pie Chart with legend below */}
+            <h3 style={{ textAlign: 'center', fontFamily: 'Roboto, sans-serif', fontWeight: '600', color: '#333' }}>
+              Grievance Distribution
+            </h3>
             <Pie
               data={pieChartData}
               options={pieChartOptions}
               width={40}
               height={30}
-              style={{ paddingBottom: '3rem' }} // Added margin to provide space below the pie chart
+              style={{ paddingBottom: '3rem' }}
             />
           </div>
         </Col>
-
         <Col xs={12} md={6}>
           <div className="chart-card shadow-lg card" style={{ height: '400px' }}>
-            <h3 style={{ textAlign: "center" }}>Grievance Counts by Category</h3>
-            {/* Bar Chart */}
-            <Bar data={barChartData} width={40} height={30} style={{ paddingBottom: '3rem' }}/>
+            <h3 style={{ textAlign: "center", fontFamily: 'Roboto, sans-serif', fontWeight: '600', color: '#333' }}>
+              Grievance Counts by Category
+            </h3>
+            <Bar data={barChartData} width={40} height={30} style={{ paddingBottom: '3rem' }} />
           </div>
         </Col>
       </Row>
-      <Row className="mt-10" style={{ marginTop: "5rem", gap:'1rem'}}>
+      <Row className="mt-10" style={{ marginTop: "5rem", gap: '1rem' }}>
         <Col xs={12} md={5.5} className="mb-4 shadow-lg card">
           <div className="chart-card" style={{ height: '400px' }}>
-            <h3 style={{ textAlign: 'center' }}>Gender Distribution by Category (Based on Gender)</h3>
+            <h3 style={{ textAlign: 'center', fontFamily: 'Poppins, sans-serif', fontWeight: '600', color: '#555' }}>
+              Gender Distribution by Category (Based on Gender)
+            </h3>
             <Bar data={stackedBarChartData} options={stackedBarChartOptions} style={{ paddingBottom: '3rem' }} />
           </div>
         </Col>
         <Col xs={12} md={5.5} className="mb-4 shadow-lg card">
           <div className="chart-card" style={{ height: '400px' }}>
-            <h3 style={{ textAlign: 'center' }}>Age Distribution by Category</h3>
+            <h3 style={{ textAlign: 'center', fontFamily: 'Poppins, sans-serif', fontWeight: '600', color: '#555' }}>
+              Age Distribution by Category
+            </h3>
             <Bar data={ageDistributionChartData} options={ageDistributionChartOptions} style={{ paddingBottom: '3rem' }} />
           </div>
         </Col>
@@ -357,40 +359,43 @@ const Home = () => {
       <Row className="mt-10" style={{ marginTop: "4rem" }}>
         <Col xs={12} md={5.5} className="mb-4 shadow-lg card">
           <div className="chart-card" style={{ height: '400px' }}>
-            <h3 style={{ textAlign: 'center' }}>Transfer Types by Gender</h3>
-            <Bar data={transferTypeChartData} options={transferTypeChartOptions}  style={{ paddingBottom: '3rem' }}/>
+            <h3 style={{ textAlign: 'center', fontFamily: 'Roboto, sans-serif', fontWeight: '600', color: '#444' }}>
+              Transfer Types by Gender
+            </h3>
+            <Bar data={transferTypeChartData} options={transferTypeChartOptions} style={{ paddingBottom: '3rem' }} />
           </div>
         </Col>
         <Col xs={12} md={5.5} className="mb-4 shadow-lg card">
           <div className="chart-card" style={{ height: '400px' }}>
-            <h3 style={{ textAlign: 'center' }}>Qualifications by Gender</h3>
-            <Bar data={qualificationChartData} options={qualificationChartOptions}  style={{ paddingBottom: '3rem' }}/>
+            <h3 style={{ textAlign: 'center', fontFamily: 'Roboto, sans-serif', fontWeight: '600', color: '#444' }}>
+              Qualifications by Gender
+            </h3>
+            <Bar data={qualificationChartData} options={qualificationChartOptions} style={{ paddingBottom: '3rem' }} />
           </div>
         </Col>
       </Row>
       <Row className="mt-4" style={{ justifyContent: 'center' }}>
         <Col xs={12} md={6} className="mb-4">
           <div className="card shadow-lg p-3 text-center">
-            <h3 className="text-center">Total Records</h3>
-            <div className="card-value">{totalRecords}</div>
+            <h3 style={{ fontFamily: 'Poppins, sans-serif', fontWeight: '700', color: '#555' }}>Total Records</h3>
+            <div className="card-value" style={{ fontSize: '2rem', fontWeight: 'bold' }}>{totalRecords}</div>
           </div>
         </Col>
-        {(!userInfo.role)
-          ?
+        {(!userInfo.role) &&
           <Col xs={12} md={6}>
             <div className="card shadow-lg p-3 text-center">
-              <h3 className="text-center">Total Employees</h3>
-              <div className="card-value">{totalEmployees}</div>
+              <h3 style={{ fontFamily: 'Poppins, sans-serif', fontWeight: '700', color: '#555' }}>Total Employees</h3>
+              <div className="card-value" style={{ fontSize: '2rem', fontWeight: 'bold' }}>{totalEmployees}</div>
             </div>
           </Col>
-          : null}
+        }
       </Row>
       <Row>
         {grievanceCounts.map(({ category, count }, index) => (
           <Col xs={12} md={4} key={index} className="mb-4">
             <div className="card shadow-lg p-3 text-center">
-              <h4>{category}</h4>
-              <div className="card-value">{count}</div>
+              <h4 style={{ fontFamily: 'Poppins, sans-serif', fontWeight: '600', color: '#555' }}>{category}</h4>
+              <div className="card-value" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{count}</div>
             </div>
           </Col>
         ))}
