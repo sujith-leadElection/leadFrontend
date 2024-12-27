@@ -283,28 +283,29 @@ const GrievanceTable = () => {
   const renderGrievanceRows = (grievanceCategory, startIndex) => {
     return grievanceCategory.map((grievance, index) => (
       <tr key={index}>
-        <td>{startIndex + index}</td>
-        <td>{grievance.category}</td>
-        <td>{grievance.token}</td>
-        <td>{grievance.name}</td>
-        <td>{acMap.get(grievance.acId)}</td>
-        <td>{mandalMap.get(grievance.mandalId)}</td>
-        <td>{villageMap.get(grievance.villageId)}</td>
-        <td>{grievance.phoneNumber}</td>
-        <td>
-          <Button variant="primary" onClick={() => handleEdit(grievance._id)}>
+        <td style={cellStyle}>{startIndex + index}</td>
+        <td style={cellStyle}>{grievance.category}</td>
+        <td style={cellStyle}>{grievance.token}</td>
+        <td style={cellStyle}>{grievance.name}</td>
+        <td style={cellStyle}>{acMap.get(grievance.acId)}</td>
+        <td style={cellStyle}>{mandalMap.get(grievance.mandalId)}</td>
+        <td style={cellStyle}>{villageMap.get(grievance.villageId)}</td>
+        <td style={cellStyle}>{grievance.phoneNumber}</td>
+        <td style={actionCellStyle}>
+          <Button variant="primary" size="sm" onClick={() => handleEdit(grievance._id)}>
             Edit
           </Button>
         </td>
-        <td>
+        <td style={actionCellStyle}>
           <Button
-            variant="primary"
+            variant="danger"
+            size="sm"
             onClick={() => deleteEdit(grievance._id, grievance.category)}
           >
             Delete
           </Button>
         </td>
-        <td>
+        <td style={actionCellStyle}>
           <JsonToPdf
             jsonData={grievance}
             acName={acMap}
@@ -315,7 +316,19 @@ const GrievanceTable = () => {
       </tr>
     ));
   };
-
+  // Styles for the table cells
+  const cellStyle = {
+    whiteSpace: 'normal',
+    wordWrap: 'break-word',
+    textAlign: 'left',
+    padding: '0.75rem',
+    verticalAlign: 'middle',
+    border: '1px solid #dee2e6',
+  };
+  const actionCellStyle = {
+    ...cellStyle,
+    textAlign: 'center',
+  };
   const handleButtonClick = () => {
     // Flatten all grievance arrays from the category keys
     const allGrievancesjson = Object.values(allGrievances).flat();
