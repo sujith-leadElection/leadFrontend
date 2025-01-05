@@ -49,6 +49,7 @@ export const validateForm = (formData) => {
 
     // Dropdown Validation
     if (!formData.acId) {
+        console.log(formData);
         errors.push("AC must be selected.");
     }
     if (!formData.mandalId) {

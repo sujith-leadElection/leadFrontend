@@ -119,7 +119,7 @@ const Development = ({
     return (
         <Form>
             <Row className="mb-3">
-                <Col md={12}>
+                <Col md={6}>
                     <Form.Group controlId="mandal-select">
                         <Form.Label>Select Mandal</Form.Label>
                         <Form.Control
@@ -137,10 +137,7 @@ const Development = ({
                         </Form.Control>
                     </Form.Group>
                 </Col>
-            </Row>
-
-            <Row className="mb-3">
-                <Col md={12}>
+                <Col md={6}>
                     <Form.Group controlId="village-select">
                         <Form.Label>Select Village</Form.Label>
                         <Form.Control
@@ -161,7 +158,7 @@ const Development = ({
             </Row>
 
             <Row className="mb-3">
-                <Col md={12}>
+                <Col md={4}>
                     <Form.Group controlId="authority">
                         <Form.Label>Authority</Form.Label>
                         <Form.Control
@@ -172,10 +169,7 @@ const Development = ({
                         />
                     </Form.Group>
                 </Col>
-            </Row>
-
-            <Row className="mb-3">
-                <Col md={12}>
+                <Col md={4}>
                     <Form.Group controlId="issue">
                         <Form.Label>Issue</Form.Label>
                         <Form.Control
@@ -186,10 +180,7 @@ const Development = ({
                         />
                     </Form.Group>
                 </Col>
-            </Row>
-
-            <Row className="mb-3">
-                <Col md={12}>
+                <Col md={4}>
                     <Form.Group controlId="letter-issue">
                         <Form.Label>Letter Issue</Form.Label>
                         <Form.Control

@@ -111,7 +111,7 @@ const CMRF = ({
       <h5>Patient Details</h5>
 
       <Row className="mb-3">
-        <Col md={12}>
+        <Col md={6}>
           <Form.Group controlId="mandal-select">
             <Form.Label>Select Mandal</Form.Label>
             <Form.Control
@@ -128,10 +128,7 @@ const CMRF = ({
             </Form.Control>
           </Form.Group>
         </Col>
-      </Row>
-
-      <Row className="mb-3">
-        <Col md={12}>
+        <Col md={6}>
           <Form.Group controlId="village-select">
             <Form.Label>Select Village</Form.Label>
             <Form.Control

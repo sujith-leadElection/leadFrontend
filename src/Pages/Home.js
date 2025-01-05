@@ -63,10 +63,20 @@ const Home = () => {
 
   const grievanceCategories = data?.grievanceCategories || {};
   const grievanceLabels = Object.keys(grievanceCategories || {});
+  // Get today's date in YYYY-MM-DD format
+  const today = new Date().toISOString().split('T')[0];
   const grievanceCounts = grievanceLabels.map((category) => ({
     category,
     count: grievanceCategories[category]?.length || 0,
   }));
+  // Calculate grievances counts for today
+  const todayGrievanceCounts = grievanceLabels.map((category) => {
+    const grievances = grievanceCategories[category] || [];
+    const todayCount = grievances.filter(
+      (grievance) => grievance.createdAt && grievance.createdAt.startsWith(today)
+    ).length;
+    return { category, count: todayCount };
+  });
 
   const transferTypes = ['transfer', 'retention', 'recommendation', 'new_post_recommended'];
   const totalEmployees = data.employees?.length || 0;
@@ -104,6 +114,24 @@ const Home = () => {
         backgroundColor: COLORS,
       },
     ],
+  };
+  const barChartOptions = {
+    scales: {
+      x: {
+        ticks: {
+          font: {
+            size: 10, // Adjust this value to set the desired font size
+          },
+        },
+      },
+      y: {
+        ticks: {
+          font: {
+            size: 12, // You can also adjust the y-axis label size if needed
+          },
+        },
+      },
+    },
   };
 
   // Process data to count genders in each category
@@ -147,10 +175,20 @@ const Home = () => {
     scales: {
       x: {
         stacked: true,
+        ticks: {
+          font: {
+            size: 10, // Adjust this value to set the desired font size for x-axis labels
+          },
+        },
       },
       y: {
         stacked: true,
         beginAtZero: true,
+        ticks: {
+          font: {
+            size: 12, // You can also adjust the y-axis label size if needed
+          },
+        },
       },
     },
   };
@@ -197,10 +235,20 @@ const Home = () => {
     scales: {
       x: {
         stacked: true,
+        ticks: {
+          font: {
+            size: 10, // Adjust this value to set the desired font size for x-axis labels
+          },
+        },
       },
       y: {
         stacked: true,
         beginAtZero: true,
+        ticks: {
+          font: {
+            size: 12, // You can also adjust the y-axis label size if needed
+          },
+        },
       },
     },
   };
@@ -247,10 +295,20 @@ const Home = () => {
     scales: {
       x: {
         stacked: true,
+        ticks: {
+          font: {
+            size: 10, // Adjust this value to set the desired font size for x-axis labels
+          },
+        },
       },
       y: {
         stacked: true,
         beginAtZero: true,
+        ticks: {
+          font: {
+            size: 12, // You can also adjust the y-axis label size if needed
+          },
+        },
       },
     },
   };
@@ -302,10 +360,20 @@ const Home = () => {
     scales: {
       x: {
         stacked: true,
+        ticks: {
+          font: {
+            size: 10, // Adjust this value to set the desired font size for x-axis labels
+          },
+        },
       },
       y: {
         stacked: true,
         beginAtZero: true,
+        ticks: {
+          font: {
+            size: 12, // You can also adjust the y-axis label size if needed
+          },
+        },
       },
     },
   };
@@ -314,65 +382,47 @@ const Home = () => {
       <h1 className="text-center my-4" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 'bold', color: '#4A90E2' }}>
         Welcome, {userInfo.role ? profile.name : `${profile.firstname} ${profile.lastname}`}
       </h1>
-      <Row className="mb-4" style={{ marginBottom: "5rem" }}>
-        <Col xs={12} md={6} className="mb-4 shadow-lg card">
-          <div className="chart-card" style={{ height: '400px' }}>
-            <h3 style={{ textAlign: 'center', fontFamily: 'Roboto, sans-serif', fontWeight: '600', color: '#333' }}>
-              Grievance Distribution
-            </h3>
-            <Pie
-              data={pieChartData}
-              options={pieChartOptions}
-              width={40}
-              height={30}
-              style={{ paddingBottom: '3rem' }}
-            />
-          </div>
-        </Col>
-        <Col xs={12} md={6}>
-          <div className="chart-card shadow-lg card" style={{ height: '400px' }}>
-            <h3 style={{ textAlign: "center", fontFamily: 'Roboto, sans-serif', fontWeight: '600', color: '#333' }}>
-              Grievance Counts by Category
-            </h3>
-            <Bar data={barChartData} width={40} height={30} style={{ paddingBottom: '3rem' }} />
-          </div>
-        </Col>
+      <Row className="justify-content-center mt-4">
+        <h2 style={{
+          fontFamily: 'Poppins, sans-serif',
+          fontWeight: '700',
+          color: '#333',
+          textAlign: 'center',
+          letterSpacing: '1px'
+        }}>
+          Overall Count
+        </h2>
       </Row>
-      <Row className="mt-10" style={{ marginTop: "5rem", gap: '1rem' }}>
-        <Col xs={12} md={5.5} className="mb-4 shadow-lg card">
-          <div className="chart-card" style={{ height: '400px' }}>
-            <h3 style={{ textAlign: 'center', fontFamily: 'Poppins, sans-serif', fontWeight: '600', color: '#555' }}>
-              Gender Distribution by Category (Based on Gender)
-            </h3>
-            <Bar data={stackedBarChartData} options={stackedBarChartOptions} style={{ paddingBottom: '3rem' }} />
-          </div>
-        </Col>
-        <Col xs={12} md={5.5} className="mb-4 shadow-lg card">
-          <div className="chart-card" style={{ height: '400px' }}>
-            <h3 style={{ textAlign: 'center', fontFamily: 'Poppins, sans-serif', fontWeight: '600', color: '#555' }}>
-              Age Distribution by Category
-            </h3>
-            <Bar data={ageDistributionChartData} options={ageDistributionChartOptions} style={{ paddingBottom: '3rem' }} />
-          </div>
-        </Col>
+      <Row>
+        {grievanceCounts.map(({ category, count }, index) => (
+          <Col xs={12 / todayGrievanceCounts.length} key={index} className="mb-4">
+            <div className="card shadow-lg p-3 text-center">
+              <h4 style={{ fontFamily: 'Poppins, sans-serif', fontWeight: '600', color: '#555', fontSize: '1rem' }}>{category}</h4>
+              <div className="card-value" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{count}</div>
+            </div>
+          </Col>
+        ))}
       </Row>
-      <Row className="mt-10" style={{ marginTop: "4rem" }}>
-        <Col xs={12} md={5.5} className="mb-4 shadow-lg card">
-          <div className="chart-card" style={{ height: '400px' }}>
-            <h3 style={{ textAlign: 'center', fontFamily: 'Roboto, sans-serif', fontWeight: '600', color: '#444' }}>
-              Transfer Types by Gender
-            </h3>
-            <Bar data={transferTypeChartData} options={transferTypeChartOptions} style={{ paddingBottom: '3rem' }} />
-          </div>
-        </Col>
-        <Col xs={12} md={5.5} className="mb-4 shadow-lg card">
-          <div className="chart-card" style={{ height: '400px' }}>
-            <h3 style={{ textAlign: 'center', fontFamily: 'Roboto, sans-serif', fontWeight: '600', color: '#444' }}>
-              Qualifications by Gender
-            </h3>
-            <Bar data={qualificationChartData} options={qualificationChartOptions} style={{ paddingBottom: '3rem' }} />
-          </div>
-        </Col>
+      <Row className="justify-content-center mt-4">
+        <h2 style={{
+          fontFamily: 'Poppins, sans-serif',
+          fontWeight: '700',
+          color: '#333',
+          textAlign: 'center',
+          letterSpacing: '1px'
+        }}>
+          Today's Count
+        </h2>
+      </Row>
+      <Row className="gx-3 gy-3">
+        {todayGrievanceCounts.map(({ category, count }, index) => (
+          <Col xs={12 / todayGrievanceCounts.length} key={index} className="mb-4">
+            <div className="card shadow-lg p-3 text-center">
+              <h4 style={{ fontFamily: 'Poppins, sans-serif', fontWeight: '600', color: '#555', fontSize: '1rem' }}>{category}</h4>
+              <div className="card-value" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{count}</div>
+            </div>
+          </Col>
+        ))}
       </Row>
       <Row className="mt-4" style={{ justifyContent: 'center' }}>
         <Col xs={12} md={6} className="mb-4">
@@ -390,15 +440,65 @@ const Home = () => {
           </Col>
         }
       </Row>
-      <Row>
-        {grievanceCounts.map(({ category, count }, index) => (
-          <Col xs={12} md={4} key={index} className="mb-4">
-            <div className="card shadow-lg p-3 text-center">
-              <h4 style={{ fontFamily: 'Poppins, sans-serif', fontWeight: '600', color: '#555' }}>{category}</h4>
-              <div className="card-value" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{count}</div>
-            </div>
-          </Col>
-        ))}
+      <Row className="mb-4" style={{ marginBottom: "5rem" }}>
+        <Col xs={12} md={6} className="mb-4 shadow-lg card">
+          <div className="chart-card" style={{ height: '400px',paddingTop: '3px' }}>
+            <h3 style={{ textAlign: 'center', fontFamily: 'Roboto, sans-serif', fontWeight: '600', color: '#333', fontSize: '1rem' }}>
+              Grievance Distribution
+            </h3>
+            <Pie
+              data={pieChartData}
+              options={pieChartOptions}
+              width={40}
+              height={30}
+              style={{ paddingBottom: '3rem' }}
+            />
+          </div>
+        </Col>
+        <Col xs={12} md={6}>
+          <div className="chart-card shadow-lg card" style={{ height: '400px', padding: '5px' }}>
+            <h3 style={{ textAlign: "center", fontFamily: 'Roboto, sans-serif', fontWeight: '600', color: '#333', fontSize: '1rem' }}>
+              Grievance Counts by Category
+            </h3>
+            <Bar data={barChartData} options={barChartOptions} width={60} height={40} style={{ paddingBottom: '3rem' }} />
+          </div>
+        </Col>
+      </Row>
+      <Row className="mt-10" style={{ marginTop: "2rem", paddingBottom: "1rem" }}> {/* Add padding-bottom here */}
+        <Col xs={12} md={6} className="mb-4 shadow-lg card">
+          <div className="chart-card" style={{ height: '400px', padding: '5px' }}>
+            <h3 style={{ textAlign: 'center', fontFamily: 'Poppins, sans-serif', fontWeight: '600', color: '#555', fontSize: '1rem' }}>
+              Gender Distribution by Category (Based on Gender)
+            </h3>
+            <Bar data={stackedBarChartData} options={stackedBarChartOptions} width={50} height={30} style={{ paddingBottom: '3rem' }} />
+          </div>
+        </Col>
+        <Col xs={12} md={6} className="mb-4 shadow-lg card" style={{ width: '630px', marginLeft: '1rem' }}>
+          <div className="chart-card" style={{ height: '400px', padding: '5px' }}>
+            <h3 style={{ textAlign: 'center', fontFamily: 'Poppins, sans-serif', fontWeight: '600', color: '#555', fontSize: '1rem' }}>
+              Age Distribution by Category
+            </h3>
+            <Bar data={ageDistributionChartData} options={ageDistributionChartOptions} width={60} height={40} style={{ paddingBottom: '3rem' }} />
+          </div>
+        </Col>
+      </Row>
+      <Row className="mt-10" style={{ marginTop: "2rem", paddingBottom: "1rem" }}> {/* Add padding-bottom here */}
+        <Col xs={12} md={6} className="mb-4 shadow-lg card">
+          <div className="chart-card" style={{ height: '400px', paddingTop: '10px' }}>
+            <h3 style={{ textAlign: 'center', fontFamily: 'Roboto, sans-serif', fontWeight: '600', color: '#444', fontSize: '1rem' }}>
+              Transfer Types by Gender
+            </h3>
+            <Bar data={transferTypeChartData} options={transferTypeChartOptions} width={50} height={30} style={{ paddingBottom: '3rem' }} />
+          </div>
+        </Col>
+        <Col xs={12} md={6} className="mb-4 shadow-lg card" style={{ width: '630px', marginLeft: '1rem' }}>
+          <div className="chart-card" style={{ height: '400px', paddingTop: '10px'}}>
+            <h3 style={{ textAlign: 'center', fontFamily: 'Roboto, sans-serif', fontWeight: '600', color: '#444', fontSize: '1rem' }}>
+              Qualifications by Gender
+            </h3>
+            <Bar data={qualificationChartData} options={qualificationChartOptions}  width={60} height={40} style={{ paddingBottom: '3rem' }} />
+          </div>
+        </Col>
       </Row>
     </Container>
   );

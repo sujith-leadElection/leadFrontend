@@ -168,14 +168,15 @@ const LetterRequestForm = () => {
   };
 
   const handleAcChange = (e) => {
+    console.log(e.target.value);
     const acId = e.target.value;
-    setSelectedAc(acId);
+    setSelectedAc(e.target.value);
     setMandals(Object.keys(acData[acId]?.mandals || {}));
     let arr = [];
-    setFormData({
-      ...formData,
-      acId: acId
-    })
+    // setFormData({
+    //   ...formData,
+    //   acId: acId
+    // })
     Object.entries(acData[acId]?.mandals).forEach(([key, value]) => {
       arr.push({
         key: key,
@@ -188,12 +189,15 @@ const LetterRequestForm = () => {
     setVillages([]);
     setFormData({
       ...formData,
+      acId: acId,
       mandalId: '',
       villageId: ''
     })
   };
 
   const handleMandalChange = (e) => {
+    console.log("seleted ac", selectedAc);
+
     const mandalId = e.target.value;
     setSelectedMandal(mandalId);
     setFormData({
@@ -203,6 +207,8 @@ const LetterRequestForm = () => {
     })
     setSelectedVillage('');
     setVillages(acData[selectedAc]?.mandals[mandalId].village || []);
+    console.log(acData[selectedAc]);
+
   };
 
   const handleVillageChange = (e) => {
@@ -394,7 +400,7 @@ const LetterRequestForm = () => {
         <h3 className="my-4 me-3 ps-2">Letter Request Form</h3>
         <Form onSubmit={handleSubmit}>
           <Row className="mb-3">
-            <Col md={4}>
+            <Col md={3}>
               <Form.Group controlId="formName">
                 <Form.Label>Name</Form.Label>
                 <Form.Control
@@ -406,7 +412,7 @@ const LetterRequestForm = () => {
                 />
               </Form.Group>
             </Col>
-            <Col md={4}>
+            <Col md={3}>
               <Form.Group controlId="formGender">
                 <Form.Label>Gender</Form.Label>
                 <Form.Control
@@ -423,7 +429,19 @@ const LetterRequestForm = () => {
                 </Form.Control>
               </Form.Group>
             </Col>
-            <Col md={4}>
+            <Col md={3}>
+              <Form.Group controlId="formAge">
+                <Form.Label>Age</Form.Label>
+                <Form.Control
+                  type="number"
+                  name="age"
+                  value={formData.age}
+                  onChange={handleInputChange}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col md={3}>
               <Form.Group controlId="formRelation">
                 <Form.Label>Relation</Form.Label>
                 <div className="d-flex">
@@ -458,7 +476,6 @@ const LetterRequestForm = () => {
               </Form.Group>
             </Col>
           </Row>
-
           <Row className="mb-3">
             <Col md={4}>
               <Form.Group controlId="formFatherName">
@@ -467,18 +484,6 @@ const LetterRequestForm = () => {
                   type="text"
                   name="fatherName"
                   value={formData.fatherName}
-                  onChange={handleInputChange}
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={4}>
-              <Form.Group controlId="formAge">
-                <Form.Label>Age</Form.Label>
-                <Form.Control
-                  type="number"
-                  name="age"
-                  value={formData.age}
                   onChange={handleInputChange}
                   required
                 />
@@ -497,9 +502,6 @@ const LetterRequestForm = () => {
                 />
               </Form.Group>
             </Col>
-          </Row>
-
-          <Row className="mb-3">
             <Col md={4}>
               <Form.Group controlId="formPhoneNumber">
                 <Form.Label>Phone Number</Form.Label>
@@ -513,44 +515,44 @@ const LetterRequestForm = () => {
               </Form.Group>
             </Col>
           </Row>
-          <Row className="mb-3">
-            <Col>
-              <Form.Check
-                type="checkbox"
-                label="Letter Required"
-                checked={formData.letterRequired}
-                onChange={handleCheckboxChange}
-              />
+          <Row className="mb-3" style={{ paddingBottom: '1rem' }}>
+            <Col md={3}>
+              <div className="d-flex align-items-center" style={{ paddingTop: '25px' }}>
+                <Form.Check
+                  type="checkbox"
+                  label=""
+                  checked={formData.letterRequired}
+                  onChange={handleCheckboxChange}
+                  className="me-2"
+                />
+                <h6 className="mb-0">Letter Required</h6>
+              </div>
+            </Col>
+            <Col md={3} style={{ visibility: formData.letterRequired ? 'visible' : 'hidden', height: '0' }}>
+              <Form.Group controlId="formTo">
+                <Form.Label>To</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="to"
+                  value={formData.to}
+                  onChange={handleInputChange}
+                  required={formData.letterRequired}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={3} style={{ visibility: formData.letterRequired ? 'visible' : 'hidden', height: '0' }}>
+              <Form.Group controlId="formPurpose">
+                <Form.Label>Purpose</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="purpose"
+                  value={formData.purpose}
+                  onChange={handleInputChange}
+                  required={formData.letterRequired}
+                />
+              </Form.Group>
             </Col>
           </Row>
-          {formData.letterRequired && (
-            <Row className="mb-3">
-              <Col md={6}>
-                <Form.Group controlId="formTo">
-                  <Form.Label>To</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="to"
-                    value={formData.to}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group controlId="formPurpose">
-                  <Form.Label>Purpose</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="purpose"
-                    value={formData.purpose}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-          )}
           <Row className="mb-4">
             <Col>
               <h5>Select Category</h5>
@@ -568,9 +570,9 @@ const LetterRequestForm = () => {
               </div>
             </Col>
           </Row>
-          {tokenInfo.role === 0 ? (
-            <Row className="mb-3">
-              <Col md={4}>
+          <Row className="mb-3" style={{ marginTop: '1.5rem' }}>
+            <Col md={4}>
+              {tokenInfo.role === 0 ? (
                 <Form.Group controlId="formAcSelect">
                   <Form.Label>AC</Form.Label>
                   <Form.Control as="select" value={selectedAc} onChange={handleAcChange}>
@@ -582,20 +584,17 @@ const LetterRequestForm = () => {
                     ))}
                   </Form.Control>
                 </Form.Group>
-              </Col>
-            </Row>
-          ) : (
-            <>
-              <h5>Employee AC ID:</h5>
-              {acData[selectedAc] ? (
-                <p>{acData[selectedAc].name}</p>
               ) : (
-                <p>Loading AC information...</p>
+                <>
+                  <h5>Employee AC ID:</h5>
+                  {acData[selectedAc] ? (
+                    <p>{acData[selectedAc].name}</p>
+                  ) : (
+                    <p>Loading AC information...</p>
+                  )}
+                </>
               )}
-            </>
-          )}
-
-          <Row className="mb-3">
+            </Col>
             <Col md={4}>
               <Form.Group controlId="formMandalSelect">
                 <Form.Label>Mandal</Form.Label>

@@ -169,7 +169,6 @@ const EmployeeDatabase = () => {
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>ID</th>
             <th>Employee Name</th>
             <th>Action</th>
           </tr>
@@ -177,7 +176,6 @@ const EmployeeDatabase = () => {
         <tbody>
           {employees.map((employee) => (
             <tr key={employee._id}>
-              <td>{employee._id}</td>
               <td>{employee.name}</td>
               <td>
                 <Button

@@ -214,7 +214,7 @@ const AddAC = () => {
         <Row className="mb-3">
           <Col md={6}>
             <Form.Group>
-              <Form.Label><MdDriveFileRenameOutline className='me-1' />Name</Form.Label>
+              <Form.Label><MdDriveFileRenameOutline className='me-1' />Assembly Name</Form.Label>
               <Form.Control
                 type="text"
                 name="name"
@@ -240,7 +240,7 @@ const AddAC = () => {
         <Row className="mb-3">
           <Col md={6}>
             <Form.Group>
-              <Form.Label><IoPersonAddSharp className='me-1' />PC ID</Form.Label>
+              <Form.Label><IoPersonAddSharp className='me-1' />AC ID</Form.Label>
               <Form.Control
                 type="text"
                 name="PCId"

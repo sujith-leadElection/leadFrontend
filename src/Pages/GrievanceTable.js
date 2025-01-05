@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import JsonToPdf from './PDFView';
 import { useNavigate } from 'react-router-dom';
 import API_BASE_URL from '../config';
+import { jsPDF } from "jspdf";
 
 const GrievanceTable = () => {
   const [grievanceCategories, setGrievanceCategories] = useState([]);
@@ -25,6 +26,7 @@ const GrievanceTable = () => {
   const [acMap, setAcMap] = useState(new Map());
   const [mandalMap, setMandalMap] = useState(new Map());
   const [villageMap, setVillageMap] = useState(new Map());
+  const [selectedDate, setSelectedDate] = useState("");
   const [tokenInfo, setUserInfo] = useState({
     userId: '',
     role: ''
@@ -145,7 +147,7 @@ const GrievanceTable = () => {
       setMandals(Object.entries(acMap[allotedACId].mandals).map(([key, value]) => ({ key, value })));
     }
   };
-
+  const handleDateChange = (e) => setSelectedDate(e.target.value);
   const handleAcChange = (e) => {
     const acId = e.target.value;
     setSelectedAc(acId);
@@ -331,7 +333,7 @@ const GrievanceTable = () => {
   };
   const handleButtonClick = () => {
     // Flatten all grievance arrays from the category keys
-    const allGrievancesjson = Object.values(allGrievances).flat();
+    const allGrievancesjson = Object.values(grievances).flat();
     // Filtering logic
     const filteredGrievances = allGrievancesjson.filter((doc) => {
       // Apply filters only if respective values are selected
@@ -340,9 +342,12 @@ const GrievanceTable = () => {
       const matchesVillage = selectedVillage ? doc.villageId === selectedVillage : true;
       const matchesCategory = selectedCategory ? doc.category === selectedCategory : true;
       const matchesToekn = token ? doc.token === token : true;
-
+      console.log(selectedDate);
+      const matchesDate = selectedDate
+        ? new Date(doc.createdAt).toISOString().slice(0, 10) === selectedDate
+        : true;
       // All conditions must match
-      return matchesAc && matchesMandal && matchesVillage && matchesCategory && matchesToekn;
+      return matchesAc && matchesMandal && matchesVillage && matchesCategory && matchesToekn && matchesDate;
     });
     // Grouping the filtered grievances by category
     const groupedGrievances = filteredGrievances.reduce((acc, doc) => {
@@ -355,6 +360,80 @@ const GrievanceTable = () => {
     }, {});
     // Updating the grievances state with the grouped data
     setGrievances(groupedGrievances);
+  };
+  const handleGeneratePdf = () => {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const margin = 10;
+    const tableMarginTop = 10;
+
+    let currentY = margin;
+
+    const addHeader = () => {
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(8);
+      doc.text("Grievance Records", pageWidth / 2, currentY, {
+        align: "center",
+      });
+      currentY += tableMarginTop;
+    };
+
+    const addCategoryTable = (category, grievancesList) => {
+      // Category title
+      doc.setFontSize(8);
+      doc.setFont("helvetica", "bold");
+      doc.text(category, margin, currentY);
+      currentY += 10;
+
+      // Table data
+      const tableData = grievancesList.map((grievance, index) => [
+        index + 1,
+        grievance.name,
+        grievance.token,
+        acMap.get(grievance.acId),
+        mandalMap.get(grievance.mandalId),
+        villageMap.get(grievance.villageId),
+        grievance.phoneNumber,
+      ]);
+
+      const tableHeaders = [
+        "SNo",
+        "Name",
+        "Token",
+        "AC ID",
+        "Mandal ID",
+        "Village ID",
+        "Phone Number",
+      ];
+
+      // Check if adding this table will exceed the page height
+      if (currentY + tableData.length * 10 > doc.internal.pageSize.getHeight()) {
+        doc.addPage();
+        currentY = margin;
+      }
+
+      doc.autoTable({
+        startY: currentY,
+        head: [tableHeaders],
+        body: tableData,
+        margin: { top: 10 },
+        styles: { fontSize: 8, cellPadding: 2 },
+      });
+
+      currentY = doc.autoTable.previous.finalY + tableMarginTop;
+    };
+
+    addHeader();
+
+    // Iterate over grievances grouped by category
+    Object.keys(grievances).forEach((category) => {
+      if (grievances[category].length > 0) {
+        addCategoryTable(category, grievances[category]);
+      }
+    });
+
+    // Save the PDF
+    doc.save("EmployeeGrievanceRecords.pdf");
   };
   return (
     <Container className="mt-5 dm-sans-googleFont">
@@ -437,9 +516,27 @@ const GrievanceTable = () => {
             />
           </Form.Group>
         </Col>
+        <Col md={4}>
+          <Form.Group controlId="formDateField">
+            <Form.Label>Date</Form.Label>
+            <Form.Control
+              type="date"
+              value={selectedDate}
+              onChange={handleDateChange}
+            />
+          </Form.Group>
+        </Col>
         <Col md={4} className="d-flex align-items-end">
           <Button variant="primary" onClick={handleButtonClick}>
             Submit
+          </Button>
+          <Button
+            variant="secondary"
+            className="ml-3"
+            onClick={handleGeneratePdf}
+            style={{marginLeft: '10px'}}
+          >
+            View All Records in PDF
           </Button>
         </Col>
       </Row>
@@ -450,6 +547,11 @@ const GrievanceTable = () => {
         </Col>
       </Row>
       {Object.keys(grievances).reduce((acc, category, categoryIdx) => {
+        // Skip to the next iteration if the current category has no grievances
+        if (grievances[category].length === 0) {
+          return acc;
+        }
+
         const rows = renderGrievanceRows(grievances[category], acc.currentIndex);
         acc.currentIndex += grievances[category].length;
         acc.elements.push(

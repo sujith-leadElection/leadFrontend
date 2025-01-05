@@ -28,8 +28,8 @@ const Sidebar = ({ toggleSidebar, role }) => (
     fontFamily: 'CustomFont',
     fontWeight: 900
   }}>
-    <div className="sidebar-header d-flex align-items-center mb-4">
-      <img src={logo} alt="Menu Icon" className="me-2" style={{ width: '150px', height: '80px' }} />
+    <div className="sidebar-header d-flex justify-content-center align-items-center mb-4">
+      <img src={logo} alt="Menu Icon" style={{ width: '150px', height: '80px' }} />
     </div>
     <Link to="/home" onClick={toggleSidebar} className="sidebar-link mb-3 d-flex align-items-center justify-content-between">
       <div>
@@ -42,7 +42,7 @@ const Sidebar = ({ toggleSidebar, role }) => (
       <Link to="/about" onClick={toggleSidebar} className="sidebar-link mb-3 d-flex align-items-center justify-content-between">
         <div>
           <RiGovernmentLine className="me-2" />
-          Assembly Constitution
+          Assembly Constituency
         </div>
         <MdArrowForwardIos />
       </Link>}

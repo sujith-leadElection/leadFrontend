@@ -120,8 +120,8 @@ const JsonToPdf = ({ jsonData, acName, mandalName, villageName }) => {
                     ["Village", villageName.get(jsonData.cmrf.village)],
                     ["HospitalName", jsonData.cmrf.hospitalName],
                     ["disease", jsonData.cmrf.disease],
-                    ["DateOfAdmission", jsonData.cmrf.dateOfAdmission],
-                    ["DateOfDischarge", jsonData.cmrf.dateOfDischarge],
+                    ["DateOfAdmission", new Date(jsonData.cmrf.dateOfAdmission).toISOString().split('T')[0]],
+                    ["DateOfDischarge", new Date(jsonData.cmrf.dateOfDischarge).toISOString().split('T')[0]],
                     ["TotalAmount", jsonData.cmrf.totalAmount]
                 ]
                 break
@@ -164,7 +164,7 @@ const JsonToPdf = ({ jsonData, acName, mandalName, villageName }) => {
                 }
                 if (transferType==="retention"){
                     grievanceInfo.push(["Transfer Type","Retention"])
-                    var retention = jsonData.transfer.retentionStartedAt
+                    var retention = new Date(jsonData.transfer.retentionStartedAt).toISOString().split('T')[0]
                     grievanceInfo.push(["Retention Started At",retention])
                 }
                 if (transferType==="recommendation") {
