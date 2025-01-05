@@ -43,7 +43,7 @@ const JsonToPdf = ({ jsonData, acName, mandalName, villageName }) => {
             doc.setFontSize(10);
             doc.setFont("helvetica", "italic");
             doc.text(
-                "CCMS Powered by LEAD™ Consulting LLP",
+                "CCMS Powered by LEAD™ Consulting",
                 pageWidth - margin,
                 pageHeight - margin,
                 null,
